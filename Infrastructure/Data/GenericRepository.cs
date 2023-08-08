@@ -20,7 +20,7 @@ namespace Infrastructure.Data
 
         public async Task<T> GetEntityWithSpec(ISpecification<T> specification)
         {
-            return await ApplaySpecification(specification).FirstOrDefaultAsync();
+            return await ApplySpecification(specification).FirstOrDefaultAsync();
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()
@@ -28,11 +28,11 @@ namespace Infrastructure.Data
             return await _context.Set<T>().ToListAsync();
         }
 
-        public Task<IReadOnlyList<T>> ListAsync(ISpecification<T> specification)
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> specification)
         {
-            throw new NotImplementedException();
+            return await ApplySpecification(specification).ToListAsync();
         }
-        private IQueryable<T> ApplaySpecification(ISpecification<T> specification)
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification)
         {
             return SpecificationEvaluator<T>.GetQuery (_context.Set<T>().AsQueryable(),specification);
         }
